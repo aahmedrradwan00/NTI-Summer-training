@@ -3,7 +3,14 @@ import SubCategory from '../models/subCategoriesModel';
 import asyncHandler from 'express-async-handler';
 import { SubCategories } from '../interfaces/subCategories';
 import ApiErrors from '../utils/apiErrors';
+import { FilterData } from '../interfaces/filterData';
 
+export const filterData = (req: Request, res: Response, next: NextFunction) => {
+    let filterData: FilterData = {};
+    if (req.params.categoryId) filterData.category = req.params.categoryId;
+    req.filterDate = filterData;
+    next();
+};
 //create SubCategory
 export const createSubCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const subcategory: SubCategories = await SubCategory.create(req.body);
@@ -12,7 +19,9 @@ export const createSubCategory = asyncHandler(async (req: Request, res: Response
 
 //get all SubCategories
 export const getsubCategories = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const subcategories = await SubCategory.find();
+    let filterData: FilterData = {};
+    if (req.params.categoryId) filterData.category = req.params.categoryId;
+    const subcategories = await SubCategory.find(filterData);
     res.status(200).json({ data: subcategories });
 });
 

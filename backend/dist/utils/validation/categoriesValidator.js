@@ -16,19 +16,24 @@ exports.deleteCategoryValidator = exports.getCategoryValidator = exports.updateC
 const validatorMiddleware_1 = __importDefault(require("../../middlewares/validatorMiddleware"));
 const express_validator_1 = require("express-validator");
 const subCategoriesModel_1 = __importDefault(require("../../models/subCategoriesModel"));
+const subCategoriesModel_2 = __importDefault(require("../../models/subCategoriesModel"));
 exports.createCategoryValidator = [(0, express_validator_1.check)('name').notEmpty().withMessage('Category name is required').isLength({ min: 2, max: 50 }), validatorMiddleware_1.default];
 exports.updateCategoryValidator = [(0, express_validator_1.check)('name').notEmpty().withMessage('category name is required'), validatorMiddleware_1.default];
-exports.getCategoryValidator = [
-    (0, express_validator_1.check)('id').isMongoId().withMessage('Invalid ID format'),
-    validatorMiddleware_1.default
-];
+exports.getCategoryValidator = [(0, express_validator_1.check)('id').isMongoId().withMessage('Invalid ID format'), validatorMiddleware_1.default];
 exports.deleteCategoryValidator = [
     (0, express_validator_1.param)('id')
         .isMongoId()
         .withMessage('wrong Id')
         .custom((val) => __awaiter(void 0, void 0, void 0, function* () {
-        const subcatrgorise = yield subCategoriesModel_1.default.find({ category: val });
-        if (subcatrgorise.length) {
+        const subcategories = yield subCategoriesModel_1.default.find({ category: val });
+        if (subcategories.length) {
+            subcategories.map((subcatrgory) => __awaiter(void 0, void 0, void 0, function* () {
+                yield subCategoriesModel_2.default.findByIdAndDelete(subcatrgory._id);
+            }));
+            const bulkOption = subcategories.map((subcategory) => ({
+                deleteOne: { filter: { _id: subcategory._id } },
+            }));
+            yield subCategoriesModel_2.default.bulkWrite(bulkOption);
         }
     })),
     validatorMiddleware_1.default,

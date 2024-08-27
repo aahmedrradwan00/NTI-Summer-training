@@ -12,18 +12,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteSubCategory = exports.updateSubCategory = exports.getSubCategory = exports.getsubCategories = exports.createSubCategory = void 0;
+exports.deleteSubCategory = exports.updateSubCategory = exports.getSubCategory = exports.getsubCategories = exports.createSubCategory = exports.filterData = void 0;
 const subCategoriesModel_1 = __importDefault(require("../models/subCategoriesModel"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const apiErrors_1 = __importDefault(require("../utils/apiErrors"));
+const filterData = (req, res, next) => {
+    let filterData = {};
+    if (req.params.categoryId)
+        filterData.category = req.params.categoryId;
+    req.filterDate = filterData;
+    next();
+};
+exports.filterData = filterData;
 //create SubCategory
 exports.createSubCategory = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const subcategory = yield subCategoriesModel_1.default.create(req.body);
     res.status(201).json({ data: subcategory });
 }));
-//get all Categories
+//get all SubCategories
 exports.getsubCategories = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const subcategories = yield subCategoriesModel_1.default.find();
+    let filterData = {};
+    if (req.params.categoryId)
+        filterData.category = req.params.categoryId;
+    const subcategories = yield subCategoriesModel_1.default.find(filterData);
     res.status(200).json({ data: subcategories });
 }));
 //get one SubCategory
