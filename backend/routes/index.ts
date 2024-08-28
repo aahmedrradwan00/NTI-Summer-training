@@ -5,11 +5,15 @@ import SubCategoriesRouter from './subcategoriesRoute';
 import ApiErrors from '../utils/apiErrors';
 import globalError from '../middlewares/globalErrors';
 import ProductsRouter from './prodectsRoute';
+import UserRouter from './userRoute';
+import authRouter from './authRoute';
 
 const mountRoutes = (app: Application): void => {
     app.use('/api/v1/categories', CategoriesRouter);
     app.use('/api/v1/subcategories', SubCategoriesRouter);
     app.use('/api/v1/products', ProductsRouter);
+    app.use('/api/v1/users', UserRouter);
+    app.use('/api/v1/auth', authRouter);
     app.all('*', (req: Request, res: Response, next: NextFunction) => {
         next(new ApiErrors(`The router ${req.originalUrl}`, 400));
         // const err = new Error('Cant find route');

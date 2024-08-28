@@ -10,14 +10,31 @@ const ProductsSchema: Schema = new Schema<Products>(
         quantity: { type: Number, default: 0, min: 0 },
         sold: { type: Number, default: 0 },
         cover: { type: String, default: '' },
-        images: [String], 
-        ratingAverage: { type: Number, default: 0, min:0, max: 5 }, // Average rating between 0 and 5
+        images: [String],
+        ratingAverage: { type: Number, default: 0, min: 0, max: 5 }, // Average rating between 0 and 5
         ratingCount: { type: Number, default: 0, min: 0 },
         category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
         subcategory: { type: Schema.Types.ObjectId, required: true, ref: 'SubCategory' },
     },
     { timestamps: true }
 );
+const imageUrl = (document: Products) => {
+    if (document.cover) {
+        const imageUrl: string = `${process.env.BASE_URL}/products/${document.cover}`;
+        document.cover = imageUrl;
+    }
+    if (document.images) {
+        const imagesList: string[] = [];
+        document.images.forEach((img) => {
+            const imageUrl: string = `${process.env.BASE_URL}/products/${img}`;
+            imagesList.push(imageUrl);
+        });
+        document.images = imagesList;
+    }
+};
+
+ProductsSchema.post('init', (document: Products) => imageUrl(document));
+ProductsSchema.post('save', (document: Products) => imageUrl(document));
 
 ProductsSchema.pre<Products>(/^find/, function (next) {
     this.populate({

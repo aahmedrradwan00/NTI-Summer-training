@@ -10,7 +10,7 @@ export interface Products extends Document {
     ratingAverage: number;
     ratingCount: number;
     cover: string;
-    images: string;
+    images: string[];
     category: Schema.Types.ObjectId;
     subcategory: Schema.Types.ObjectId;
 }
