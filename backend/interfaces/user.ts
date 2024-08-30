@@ -1,5 +1,14 @@
 import { Document } from 'mongoose';
+import { Products } from './products';
 type Role = 'manger' | 'admin' | 'user';
+
+type Address = {
+    street: string;
+    city: string;
+    zipCode?: string;
+    country: string;
+};
+
 export interface User extends Document {
     email: string;
     password: string;
@@ -9,7 +18,9 @@ export interface User extends Document {
     active: boolean;
     passwordChangedAt: Date | number;
     PasswordResetCode: string;
-    resetCode: string;
-    resetCodeExpireTime: Date | number;
-    resetCodeVerify: Boolean;
+    resetCode: string | undefined;
+    resetCodeExpireTime: Date | number | undefined;
+    resetCodeVerify: Boolean | undefined;
+    wishlist: Products[];
+    address: Address;
 }

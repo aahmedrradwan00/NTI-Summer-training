@@ -48,3 +48,30 @@ export const changeUserPassword = asyncHandler(async (req: Request, res: Respons
     if (!user) return next(new ApiErrors('user not found', 404));
     res.status(200).json({ message: 'password changed successfully', data: user });
 });
+export const setLoggedUserId = asyncHandler((req: Request, res: Response, next: NextFunction) => {
+    req.params.id = req.user?._id!.toString();
+    next();
+});
+
+export const updateLoggedUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const user = await userModel.findByIdAndUpdate(req.user?._id, { name: req.body.name, image: req.body.image }, { new: true });
+    res.status(200).json({ data: user, message: 'user updated successfully' });
+});
+export const getLoggedUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    req.params.id = req.user?._id!.toString();
+    next();
+});
+
+export const changeLoggedUserPasssword = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const user = await userModel.findByIdAndUpdate(
+        req.params.id,
+        {
+            password: await bcrypt.hash(req.body.password, 12),
+            passwordChangedAt: Date.now(),
+        },
+        { new: true }
+    );
+    if (!user) return next(new ApiErrors('user not found', 404));
+    res.status(200).json({ message: 'password changed successfully', data: user });
+    next();
+});

@@ -7,6 +7,12 @@ const userSchema: Schema = new Schema<User>(
         name: { type: String, required: true, trim: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true, minlength: 6, maxlength: 20 },
+        address: {
+            street: { type: String, required: true },
+            city: { type: String, required: true },
+            zipCode: { type: String },
+            country: { type: String, required: true },
+        },
         image: String,
         role: { type: String, required: true, enum: ['manager', 'admin', 'user'] },
         active: { type: Boolean, default: true },
@@ -14,16 +20,17 @@ const userSchema: Schema = new Schema<User>(
         resetCode: String,
         resetCodeExpireTime: Date,
         resetCodeVerify: Boolean,
+        wishlist: [{ type: Schema.Types.ObjectId, ref: 'products' }],
     },
     { timestamps: true }
 );
-const imageUrl = (document: User) => {
-    if (document.image) {
-        const imageUrl: string = `${process.env.BASE_URL}/users/${document.image}`;
-        document.image = imageUrl;
-    }
-};
-userSchema.post<User>('init', (document: User) => imageUrl(document));
+// const imageUrl = (document: User) => {
+//     if (document.image) {
+//         const imageUrl: string = `${process.env.BASE_URL}/users/${document.image}`;
+//         document.image = imageUrl;
+//     }
+// };
+// userSchema.post<User>('init', (document: User) => imageUrl(document));
 
 userSchema.pre<User>('save', async function (next) {
     // Only run this function if password was actually modified
