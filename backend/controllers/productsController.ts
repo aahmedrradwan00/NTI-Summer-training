@@ -1,7 +1,7 @@
 import { createOne, deleteOne, getAll, getOne, updateOne } from './refactorHandler';
 import { NextFunction, Request, Response } from 'express';
 import { Products } from '../interfaces/products';
-import Product from '../models/products';
+import Product from '../models/productsModel';
 import asyncHandler from 'express-async-handler';
 import sharp from 'sharp';
 import { uploadMultiImages } from '../middlewares/uploadsImages';

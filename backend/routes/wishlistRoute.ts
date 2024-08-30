@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { allowedTo, checkActive, protectRoutes } from '../controllers/auth';
-import { addProductToWishlist, getLoggedUserWishlist, removeProductFromWishlist } from '../controllers/wishlist';
+import { addProductToWishlist, getLoggedUserWishlist, removeProductFromWishlist } from '../controllers/wishlistController';
 
 const wishlistRouter: Router = Router();
 

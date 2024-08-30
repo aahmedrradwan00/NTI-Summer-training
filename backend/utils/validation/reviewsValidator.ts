@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { check } from 'express-validator';
 import validatorMiddleware from '../../middlewares/validatorMiddleware';
-import reviewsModel from '../../models/reviews';
+import reviewsModel from '../../models/reviewsModel';
 
 export const createReviewValidator: RequestHandler[] = [
     check('comment').notEmpty().withMessage('Subcategory Name is Required'),

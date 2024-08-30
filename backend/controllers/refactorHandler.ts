@@ -41,6 +41,7 @@ export const updateOne = <modelType>(model: mongoose.Model<any>) =>
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
         const doc = await model.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!doc) return next(new ApiErrors('Document not found', 404));
+        doc.save();
         res.status(200).json({ data: doc });
     });
 
@@ -48,5 +49,6 @@ export const deleteOne = <modelType>(model: mongoose.Model<any>) =>
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
         const doc = await model.findByIdAndDelete(req.params.id);
         if (!doc) return next(new ApiErrors('Document not found', 404));
+        doc.remove();
         res.status(204).json({ data: doc });
     });

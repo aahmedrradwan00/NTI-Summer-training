@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import reviewsModel from '../models/reviews';
+import reviewsModel from '../models/reviewsModel';
 import { Reviews } from '../interfaces/reviews';
 import { FilterData } from '../interfaces/filterData';
 import { createOne, deleteOne, getAll, getOne, updateOne } from './refactorHandler';

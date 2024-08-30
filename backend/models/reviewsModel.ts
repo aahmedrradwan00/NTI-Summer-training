@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { Reviews } from '../interfaces/reviews';
-import productsModel from './products';
+import productsModel from './productsModel';
 const reviewsSchema: Schema = new Schema<Reviews>(
     {
         comment: { type: String, required: true },
