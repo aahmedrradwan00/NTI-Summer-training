@@ -9,6 +9,8 @@ import UserRouter from './userRoute';
 import authRouter from './authRoute';
 import reviewsRouter from './reviewsRoute';
 import wishlistRouter from './wishlistRoute';
+import couponsRouter from './couponsRoute';
+import CartsRouter from './cartRoutes';
 const mountRoutes = (app: Application): void => {
     app.use('/api/v1/categories', CategoriesRouter);
     app.use('/api/v1/subcategories', SubCategoriesRouter);
@@ -17,6 +19,8 @@ const mountRoutes = (app: Application): void => {
     app.use('/api/v1/auth', authRouter);
     app.use('/api/v1/reviews', reviewsRouter);
     app.use('/api/v1/wishlist', wishlistRouter);
+    app.use('/api/v1/coupons', couponsRouter);
+    app.use('/api/v1/carts', CartsRouter);
     app.all('*', (req: Request, res: Response, next: NextFunction) => {
         next(new ApiErrors(`The router ${req.originalUrl}`, 400));
         // const err = new Error('Cant find route');

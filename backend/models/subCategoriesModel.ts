@@ -3,7 +3,7 @@ import { SubCategories } from '../interfaces/subCategories';
 
 const SubCategorySchema: Schema = new Schema<SubCategories>(
     {
-        name: { type: String, required: true, unique: true, trim: true },
+        name: { type: String, required: true, trim: true },
         category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
     },
     { timestamps: true }

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { allowedTo, checkActive, protectRoutes } from "../controllers/auth";
+import { allowedTo, checkActive, protectRoutes } from "../controllers/authController";
 import { createReview, deleteReview, filterReviews, getReview, getReviews, setProductAndUserId, updateReview } from "../controllers/reviewsController";
 import { createReviewValidator, deleteReviewValidator, getReviewValidator, updateReviewValidator } from "../utils/validation/reviewsValidator";
 

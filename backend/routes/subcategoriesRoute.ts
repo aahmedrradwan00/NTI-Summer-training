@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createSubCategory, getSubcategory, getSubCategories, updateSubcategory, deleteSubcategory, filterData } from '../controllers/subCategoriesController';
 import { createSubcategoryValidator, deleteSubcategoryValidator, getSubcategoryValidator, updateSubcategoryValidator } from '../utils/validation/subcategoriesValidator';
-import { allowedTo, checkActive, protectRoutes } from '../controllers/auth';
+import { allowedTo, checkActive, protectRoutes } from '../controllers/authController';
 
 const SubCategoriesRouter: Router = Router({ mergeParams: true });
 

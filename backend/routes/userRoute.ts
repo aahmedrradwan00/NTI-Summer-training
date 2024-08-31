@@ -14,7 +14,7 @@ import {
     changeUserPassword,
 } from '../controllers/userController';
 import { changeLoggedUserPasswordValidator, changeUserPasswordValidator, createUserValidator, deleteUserValidator, getUserValidator, updateUserValidator } from '../utils/validation/userValidator';
-import { allowedTo, checkActive, protectRoutes } from '../controllers/auth';
+import { allowedTo, checkActive, protectRoutes } from '../controllers/authController';
 
 const UserRouter: Router = Router();
 

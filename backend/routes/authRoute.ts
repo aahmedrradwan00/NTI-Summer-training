@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { forgetPassword, login, resetCode, signup, verifyResetCode } from '../controllers/auth';
+import { forgetPassword, login, resetCode, signup, verifyResetCode } from '../controllers/authController';
 import { loginValidator, resetCodeValidator, signupValidator } from '../utils/validation/authValidator';
 import sendEmail from '../utils/email';
 
