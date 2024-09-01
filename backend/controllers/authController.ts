@@ -12,12 +12,14 @@ const createToken = (id: any) => {
     return Jwt.sign({ _id: id }, process.env.JWT_SECRET_KEY!, { expiresIn: process.env.JWT_EXPIRES_IN });
 };
 
+// signup
 export const signup = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const user: User = await userModel.create(req.body);
     const token = createToken(user._id);
     res.status(201).json({ token, data: user });
 });
 
+// login
 export const login = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
@@ -28,6 +30,7 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
     res.status(201).json({ token, data: user });
 });
 
+// protect Routes
 export const protectRoutes = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     //check token
     let token: string = '';
@@ -46,6 +49,7 @@ export const protectRoutes = asyncHandler(async (req: Request, res: Response, ne
     next();
 });
 
+// forget Password
 export const forgetPassword = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const user = await userModel.findOne({ email: req.body.email });
     if (!user) return next(new ApiErrors('user not found', 404));
@@ -63,6 +67,8 @@ export const forgetPassword = asyncHandler(async (req: Request, res: Response, n
     const resetToken: string = createToken(user._id);
     res.status(200).json({ message: 'Reset code sent to email', resetToken });
 });
+
+// verify Reset Code
 export const verifyResetCode = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     let resetToken: string = '';
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -78,17 +84,17 @@ export const verifyResetCode = asyncHandler(async (req: Request, res: Response, 
         resetCodeExpireTime: { $gt: Date.now() },
     });
     if (!user) return next(new ApiErrors('invalid or expired reset code', 400));
-
     user.resetCodeVerify = true;
     await user.save({ validateModifiedOnly: true });
     res.status(200).json({ message: 'reset code verified' });
 });
+
+// reset Code
 export const resetCode = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     let resetToken: string = '';
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         resetToken = req.headers.authorization.split(' ')[1];
     } else return next(new ApiErrors("You don't have permission to perform this action.", 400));
-
     const decodedToken: any = Jwt.verify(resetToken, process.env.JWT_SECRET_KEY!);
     const user = await userModel.findOne({
         _id: decodedToken._id,
@@ -103,6 +109,8 @@ export const resetCode = asyncHandler(async (req: Request, res: Response, next: 
     await user.save({ validateModifiedOnly: true });
     res.status(200).json({ message: 'your password has been changed' });
 });
+
+// allowed To
 export const allowedTo = (...roles: string[]) =>
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
         // roles ['admin', 'lead-guide']. role='user'
@@ -112,6 +120,7 @@ export const allowedTo = (...roles: string[]) =>
         next();
     });
 
+// checkActive
 export const checkActive = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user?.active) return next(new ApiErrors('your account is not active', 403));
     next();

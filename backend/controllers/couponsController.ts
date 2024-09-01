@@ -2,9 +2,9 @@ import { createOne, deleteOne, getAll, getOne, updateOne } from './refactorHandl
 import couponsModel from '../models/couponsModel';
 import { Coupons } from '../interfaces/coupons';
 
-//create category
+//create Coupons
 export const createCoupon = createOne<Coupons>(couponsModel);
-//get all Categories
+//get all Coupons
 export const getCoupons  = getAll<Coupons>(couponsModel,"Coupons");
 //get one Coupons
 export const getCoupon = getOne<Coupons>(couponsModel);

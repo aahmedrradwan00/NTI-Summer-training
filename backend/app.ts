@@ -7,7 +7,9 @@ import compression from 'compression';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import cors from 'cors';
+import { I18n } from 'i18n';
 import mongoSanitize from 'express-mongo-sanitize';
+import path from 'path';
 
 const app: express.Application = express();
 app.use(express.json());
@@ -28,6 +30,17 @@ app.use(express.static('uploads'));
 
 //DataBase connection
 database();
+
+// transalte
+
+const i18n = new I18n({
+    locales: ['en', 'ar'],
+    directory: path.join(__dirname, 'locales'),
+    defaultLocale: 'en',
+    queryParameter: 'lang',
+});
+app.use(i18n.init)
+
 
 // Routes
 mountRoutes(app);

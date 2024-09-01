@@ -6,12 +6,14 @@ import asyncHandler from 'express-async-handler';
 import sharp from 'sharp';
 import { uploadMultiImages } from '../middlewares/uploadsImages';
 
+// upload Product Images
 export const uploadProductImages = uploadMultiImages([
     { name: 'cover', maxCount: 1 },
-    { name: 'images', maxCount: 5 }
-  ])
+    { name: 'images', maxCount: 5 },
+]);
 
-export const resizeImage = asyncHandler(async (req: Request, res: Response, next: NextFunction)  => {
+// resize product Image
+export const resizeImage = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     if (req.files) {
         if (req.files.cover) {
             const coverName: string = `Product-${Date.now()}-cover.png`;
@@ -21,7 +23,7 @@ export const resizeImage = asyncHandler(async (req: Request, res: Response, next
         if (req.files.images) {
             req.body.images = [];
             req.files.images.map(async (img: any, index: number) => {
-                const imageName: string = `Product-${Date.now()}N${index+1}.png`;
+                const imageName: string = `Product-${Date.now()}N${index + 1}.png`;
                 await sharp(img.buffer).toFormat('png').png({ quality: 90 }).toFile(`uploads/products/${imageName}`);
                 req.body.images.push(imageName);
             });

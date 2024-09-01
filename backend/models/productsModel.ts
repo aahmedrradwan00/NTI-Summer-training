@@ -33,6 +33,8 @@ const imageUrl = (document: Products) => {
     }
 };
 
+ProductsSchema.virtual('reviews', { ref: 'reviews', foreignField: 'product', localField: '_id' })
+
 ProductsSchema.post('init', (document: Products) => imageUrl(document));
 ProductsSchema.post('save', (document: Products) => imageUrl(document));
 

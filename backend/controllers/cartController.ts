@@ -30,22 +30,18 @@ export const addProductToCart = asyncHandler(async (req: Request, res: Response,
     const product = await productsModel.findById(req.body.product);
     if (!product) return next(new ApiErrors('err', 404));
     let cart: any = await cartsModel.findOne({ user: req.user?._id });
-    console.log('1');
-
     if (!cart) {
-        console.log('2');
         cart = await cartsModel.create({
             user: req.user?._id,
             cartItems: [{ product: req.body.product, price: product?.price, quantity: 1 }],
         });
     } else {
         const productIndex = cart.cartItems.findIndex((item: CartItem) => {
-            item.product._id!.toString() === req.body.product;
+            return item.product._id!.toString() === req.body.product;
         });
         if (productIndex !== -1) cart.cartItems[productIndex].quantity += 1;
         else cart.cartItems.push({ product: req.body.product, price: product?.price });
     }
-    console.log('3');
     calcTotalPrice(cart);
     await cart.save();
     res.status(200).json({ length: cart.cartItems.length, data: cart });

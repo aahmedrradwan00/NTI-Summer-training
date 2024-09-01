@@ -4,9 +4,13 @@ import { createCategoryValidator, deleteCategoryValidator, getCategoryValidator,
 import { allowedTo, checkActive, protectRoutes } from '../controllers/authController';
 const CategoriesRouter: Router = Router();
 
+// Handle subcategory routes
 CategoriesRouter.use('/:categoryId/subcategories', CategoriesRouter);
 
+// Get or create categories 
 CategoriesRouter.route('/').get(getCategories).post(protectRoutes, checkActive, allowedTo('manager', 'admin'), createCategoryValidator, createCategory);
+
+// Get, update, or delete category by ID
 CategoriesRouter.route('/:id')
     .get(getCategoryValidator, getCategory)
     .put(protectRoutes, checkActive, allowedTo('manager', 'admin'), updateCategoryValidator, updateCategory)

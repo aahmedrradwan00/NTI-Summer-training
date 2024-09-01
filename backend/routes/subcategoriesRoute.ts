@@ -5,7 +5,10 @@ import { allowedTo, checkActive, protectRoutes } from '../controllers/authContro
 
 const SubCategoriesRouter: Router = Router({ mergeParams: true });
 
+// Get or create subcategories 
 SubCategoriesRouter.route('/').get(filterData, getSubCategories).post(protectRoutes, checkActive, allowedTo('manager', 'admin'), createSubcategoryValidator, createSubCategory);
+
+// Get, update, or delete a subcategory by ID 
 SubCategoriesRouter.route('/:id')
     .get(getSubcategoryValidator, getSubcategory)
     .put(protectRoutes, checkActive, allowedTo('manager', 'admin'), updateSubcategoryValidator, updateSubcategory)

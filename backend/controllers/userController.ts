@@ -17,7 +17,6 @@ export const getUsers = getAll<User>(userModel, 'User');
 export const getUser = getOne<User>(userModel);
 
 //update one User
-
 export const updateUser = asyncHandler(async (req: Request, res: any, next: any) => {
     const { name, image, active } = req.body;
     const user = await userModel.findByIdAndUpdate(req.params.id, {

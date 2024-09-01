@@ -5,9 +5,14 @@ import sendEmail from '../utils/email';
 
 const authRouter: Router = Router();
 
+// signup
 authRouter.route('/signup').post(signupValidator, signup);
+// login
 authRouter.route('/login').post(loginValidator, login);
+// forget Password
 authRouter.route('/forgetPassword').post(sendEmail, forgetPassword);
+// verifyCode password code
 authRouter.route('/verifyCode').post(verifyResetCode);
+// reset password code
 authRouter.route('/resetCode').put(resetCodeValidator, resetCode);
 export default authRouter;

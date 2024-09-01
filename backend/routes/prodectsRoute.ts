@@ -5,7 +5,12 @@ import { createProducts, deleteProduct, getProduct, getProducts, resizeImage, up
 import { allowedTo, checkActive, protectRoutes } from '../controllers/authController';
 const ProductsRouter: Router = Router();
 
-ProductsRouter.route('/').get(getProducts).post(protectRoutes,checkActive,allowedTo("manager","admin"),uploadProductImages, resizeImage, createProductsValidator, createProducts);
-ProductsRouter.route('/:id').get(getProductsValidator, getProduct).put(protectRoutes,checkActive,allowedTo("manager","admin"),updateCategoryValidator, updateProduct).delete(protectRoutes,checkActive,allowedTo("manager","admin"),deleteProductsValidator, deleteProduct);
+// Get or create products
+ProductsRouter.route('/').get(getProducts).post(protectRoutes, checkActive, allowedTo('manager', 'admin'), uploadProductImages, resizeImage, createProductsValidator, createProducts);
 
+// Get, update, or delete a product by ID
+ProductsRouter.route('/:id')
+    .get(getProductsValidator, getProduct)
+    .put(protectRoutes, checkActive, allowedTo('manager', 'admin'), updateCategoryValidator, updateProduct)
+    .delete(protectRoutes, checkActive, allowedTo('manager', 'admin'), deleteProductsValidator, deleteProduct);
 export default ProductsRouter;

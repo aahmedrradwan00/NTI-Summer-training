@@ -17,6 +17,7 @@ export const setProductAndUserId = (req: Request, res: Response, next: NextFunct
     next();
 };
 
+// CRUD operations for reviews
 export const createReview = createOne<Reviews>(reviewsModel);
 export const getReviews = getAll<Reviews>(reviewsModel, 'reviews');
 export const getReview = getOne<Reviews>(reviewsModel);

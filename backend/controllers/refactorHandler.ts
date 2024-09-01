@@ -27,7 +27,7 @@ export const getAll = <modelType>(model: mongoose.Model<any>, modelName: string)
 export const getOne = <modelType>(model: mongoose.Model<any>) =>
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
         const doc = await model.findById(req.params.id);
-        if (!doc) return next(new ApiErrors('Document not found', 404));
+        if (!doc) return next(new ApiErrors(`${req.__('not_found')}`, 404));
         res.status(200).json({ data: doc });
     });
 
