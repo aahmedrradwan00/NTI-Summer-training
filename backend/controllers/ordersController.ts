@@ -7,13 +7,13 @@ import asyncHandler from 'express-async-handler';
 import cartsModel from '../models/cartsModel';
 import ApiErrors from '../utils/apiErrors';
 import { CartItem } from '../interfaces/carts';
-import { it } from 'node:test';
 import productsModel from '../models/productsModel';
 
 // filterOrders
 export const filterOrders = (req: Request, res: Response, next: NextFunction) => {
     if (req.user?.role) {
         let filterData: FilterData = { user: req.user?._id };
+        req.filterData = filterData;
     }
     next();
 };

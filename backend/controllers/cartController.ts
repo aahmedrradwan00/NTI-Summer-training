@@ -5,7 +5,6 @@ import ApiErrors from '../utils/apiErrors';
 import productsModel from '../models/productsModel';
 import { CartItem, Carts } from '../interfaces/carts';
 import couponsModel from '../models/couponsModel';
-import { log } from 'console';
 
 // calclate Total Price
 const calcTotalPrice = (cart: Carts) => {

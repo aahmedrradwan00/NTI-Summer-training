@@ -9,7 +9,7 @@ export const getAll = <modelType>(model: mongoose.Model<any>, modelName: string)
     asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         let filterDate: FilterData = {};
         let searchLength: number = 0;
-        if (req.filterDate) filterDate = req.filterDate;
+        if (req.filterData) filterDate = req.filterData;
         // if(req.query){
         //     const searchRessult: Features = new Features(model.find(filterDate), req.query).filter().search(modelName);
         //     const searchData:modelType[] = await searchRessult.mongooseQuery ;

@@ -9,7 +9,7 @@ import { createOne, deleteOne, getAll, getOne, updateOne } from './refactorHandl
 export const filterData = (req: Request, res: Response, next: NextFunction) => {
     let filterData: FilterData = {};
     if (req.params.categoryId) filterData.category = req.params.categoryId;
-    req.filterDate = filterData;
+    req.filterData = filterData;
     next();
 };
 

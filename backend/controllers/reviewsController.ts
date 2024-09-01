@@ -7,7 +7,7 @@ import { createOne, deleteOne, getAll, getOne, updateOne } from './refactorHandl
 export const filterReviews = (req: Request, res: Response, next: NextFunction) => {
     let filterData: FilterData = {};
     if (req.params.productId) filterData.product = req.params.productId;
-    req.filterDate = filterData;
+    req.filterData = filterData;
     next();
 };
 
