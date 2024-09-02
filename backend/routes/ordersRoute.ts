@@ -6,11 +6,11 @@ import { createOrderValidator, isOrderDeliveredValidator, isOrderPaidValidator }
 const OrdersRouter: Router = Router();
 
 // Middlewares
-// Protect routes and allow only 'user' role
-OrdersRouter.use(protectRoutes, checkActive, allowedTo('user'));
+// Protect routes
+OrdersRouter.use(protectRoutes, checkActive);
 
 // Get all orders or create a new one
-OrdersRouter.route('/').get(filterOrders, getOrders).post(createOrderValidator, createOrder);
+OrdersRouter.route('/').get(filterOrders, getOrders).post(allowedTo('user'), createOrderValidator, createOrder);
 
 // Get order by ID
 OrdersRouter.route('/:id').get(getOrder);
