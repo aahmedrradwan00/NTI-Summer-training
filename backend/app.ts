@@ -20,7 +20,8 @@ app.use(compression());
 // hpp
 app.use(hpp({ whitelist: ['price', 'category', 'subcategory', 'ratingAverage', 'sold'] }));
 //cors
-app.use(cors({ origin: ['http://localhost:3001'], methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type', 'Authorization'], credentials: true }));
+app.use(cors());
+// app.use(cors({ origin: ['http://localhost:4200'], methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type', 'Authorization'], credentials: true }));
 // mongoSanitize
 app.use(mongoSanitize());
 // helmet
