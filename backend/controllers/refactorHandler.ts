@@ -15,13 +15,13 @@ export const getAll = <modelType>(model: mongoose.Model<any>, modelName: string)
         //     const searchData:modelType[] = await searchRessult.mongooseQuery ;
         //     searchLength=searchData.length
         // }
-        // const countDocuments: number = searchLength||await model.find(filterDate).countDocuments();
-        let apiFeatures: Features = new Features(model.find(filterDate), req.query).filter().sort().limitFildes().search(modelName);
-        const { mongooseQuery } = apiFeatures;
+        const countDocuments: number = searchLength || (await model.find(filterDate).countDocuments());
+        let apiFeatures: Features = new Features(model.find(filterDate), req.query).filter().sort().limitFildes().search(modelName).pageination(countDocuments);
+        const { mongooseQuery, paginationResult } = apiFeatures;
         let doc: modelType[] = await apiFeatures.mongooseQuery;
         searchLength = doc.length;
         apiFeatures = new Features(mongooseQuery, req.query).pageination(searchLength);
-        res.status(200).json({ length: doc.length, pagination: apiFeatures.paginationResult, data: doc });
+        res.status(200).json({ length: doc.length, pagination: paginationResult , data: doc });
     });
 
 export const getOne = <modelType>(model: mongoose.Model<any>) =>

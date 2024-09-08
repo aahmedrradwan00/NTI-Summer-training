@@ -18,25 +18,26 @@ const ProductsSchema: Schema = new Schema<Products>(
     },
     { timestamps: true }
 );
-const imageUrl = (document: Products) => {
-    if (document.cover) {
-        const imageUrl: string = `${process.env.BASE_URL}/products/${document.cover}`;
-        document.cover = imageUrl;
-    }
-    if (document.images) {
-        const imagesList: string[] = [];
-        document.images.forEach((img) => {
-            const imageUrl: string = `${process.env.BASE_URL}/products/${img}`;
-            imagesList.push(imageUrl);
-        });
-        document.images = imagesList;
-    }
-};
+
+// const imageUrl = (document: Products) => {
+//     if (document.cover) {
+//         const imageUrl: string = `${process.env.BASE_URL}/products/${document.cover}`;
+//         document.cover = imageUrl;
+//     }
+//     if (document.images) {
+//         const imagesList: string[] = [];
+//         document.images.forEach((img) => {
+//             const imageUrl: string = `${process.env.BASE_URL}/products/${img}`;
+//             imagesList.push(imageUrl);
+//         });
+//         document.images = imagesList;
+//     }
+// };
 
 ProductsSchema.virtual('reviews', { ref: 'reviews', foreignField: 'product', localField: '_id' })
 
-ProductsSchema.post('init', (document: Products) => imageUrl(document));
-ProductsSchema.post('save', (document: Products) => imageUrl(document));
+// ProductsSchema.post('init', (document: Products) => imageUrl(document));
+// ProductsSchema.post('save', (document: Products) => imageUrl(document));
 
 ProductsSchema.pre<Products>(/^find/, function (next) {
     this.populate({

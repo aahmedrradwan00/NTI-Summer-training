@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ export class SignupComponent {
         password: new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
         confirmPassword: new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
     });
-
+    // subscription: any;
     emailErrors: string = '';
     passwordErrors: string = '';
 
@@ -42,4 +42,7 @@ export class SignupComponent {
             }
         );
     }
+    // ngOnDestroy(): void {
+    //     this.subscription.unsubscribe();
+    // }
 }

@@ -12,13 +12,7 @@ export const createProductsValidator: RequestHandler[] = [
 
     check('price').notEmpty().withMessage('Price is required').isNumeric().withMessage('Price must be a number').isFloat({ min: 1, max: 1000000 }).withMessage('Price must be between 1 and 1,000,000'),
 
-    check('priceAfterDiscount')
-        .notEmpty()
-        .withMessage('Price after discount is required')
-        .isNumeric()
-        .withMessage('Price after discount must be a number')
-        .isFloat({ min: 1, max: 1000000 })
-        .withMessage('Price after discount must be between 1 and 1,000,000'),
+    check('priceAfterDiscount').optional().isNumeric().withMessage('Price after discount must be a number').isFloat({ min: 1, max: 1000000 }).withMessage('Price after discount must be between 1 and 1,000,000'),
 
     check('quantity').optional().isNumeric().withMessage('Quantity must be a number').isInt({ min: 0 }).withMessage('Quantity must be 0 or greater'),
 

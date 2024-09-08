@@ -40,11 +40,12 @@ const i18n = new I18n({
     defaultLocale: 'en',
     queryParameter: 'lang',
 });
-app.use(i18n.init)
+app.use(i18n.init);
 
 
 // Routes
 mountRoutes(app);
+
 
 //server
 const port = process.env.PORT;
