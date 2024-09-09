@@ -7,6 +7,7 @@ import { createOne, deleteOne, getAll, getOne, updateOne } from './refactorHandl
 export const filterReviews = (req: Request, res: Response, next: NextFunction) => {
     let filterData: FilterData = {};
     if (req.params.productId) filterData.product = req.params.productId;
+    if (req.user?.role === 'user' && !req.params.productId) { filterData.user = req.user._id };
     req.filterData = filterData;
     next();
 };
@@ -19,7 +20,7 @@ export const setProductAndUserId = (req: Request, res: Response, next: NextFunct
 
 // CRUD operations for reviews
 export const createReview = createOne<Reviews>(reviewsModel);
-export const getReviews = getAll<Reviews>(reviewsModel, 'reviews');
+export const getReviews = getAll<Reviews>(reviewsModel, 'Review');
 export const getReview = getOne<Reviews>(reviewsModel);
 export const updateReview = updateOne<Reviews>(reviewsModel);
 export const deleteReview = deleteOne<Reviews>(reviewsModel);

@@ -6,6 +6,12 @@
 </div> -->
 
 <div class="row m-auto container mt-4">
+    <div class="d-flex p-3 w-100">
+        <input type="text" class="form-control me-2" placeholder="Search Products" #filter />
+        <button class="primary" type="button" (click)="searchProduct(filter.value)">Search</button>
+    </div>
+
+<app-filter (filterItems)="filterItems($event)"></app-filter>
     @for(product of products; track product._id){
     <div class="card m-2 col-4" style="width: 18rem">
         <img [src]="imgDomain + product.cover" class="card-img-top w-100 h-50" [alt]="product.name" />

@@ -5,8 +5,8 @@ const reviewsSchema: Schema = new Schema<Reviews>(
     {
         comment: { type: String, required: true },
         rating: { type: Number, required: true, min: 1, max: 5 },
-        user: { type: Schema.Types.ObjectId, ref: 'users', required: true },
-        product: { type: Schema.Types.ObjectId, ref: 'products', required: true },
+        user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+        product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
     },
     { timestamps: true }
 );
@@ -35,4 +35,9 @@ reviewsSchema.pre<Reviews>(/^find/, function (next) {
     next();
 });
 
-export default model<Reviews>('reviews', reviewsSchema);
+reviewsSchema.pre<Reviews>('find', function (next) {
+    this.populate({ path: 'product', select: 'name cover' });
+    next();
+});
+
+export default model<Reviews>('reviews', reviewsSchema)

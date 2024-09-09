@@ -24,7 +24,7 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
     if (!user || !(await bcrypt.compare(password, user.password))) {
-        return next(new ApiErrors('uncorrect email or passwor', 401));
+        return next(new ApiErrors('uncorrect email or password', 401));
     }
     const token = createToken(user._id);
     res.status(201).json({ token, data: user });
@@ -62,6 +62,7 @@ export const forgetPassword = asyncHandler(async (req: Request, res: Response, n
         await sendEmail({ email: user.email, subject: 'Reset Password', message });
         await user.save({ validateModifiedOnly: true });
     } catch (error) {
+        console.log(error);
         return next(new ApiErrors('Error sending email', 400));
     }
     const resetToken: string = createToken(user._id);

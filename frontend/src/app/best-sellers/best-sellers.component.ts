@@ -20,8 +20,8 @@ export class BestSellersComponent implements OnInit, OnDestroy {
     imgDomain: string = '';
     constructor(private _ProductsService: ProductsService, private _AuthService: AuthService,private _CartService:CartService) {}
     ngOnInit(): void {
-        this._AuthService.checkToken();
-        this.imgDomain = this._ProductsService.imgDomain;
+        // this._AuthService.checkToken();
+        this.imgDomain = this._ProductsService.productImages;
         this.subscription = this._ProductsService.getProducts(16, 1, '-sold', this.search).subscribe((res) => {
             this.products = res.data;
             console.log(res.data);

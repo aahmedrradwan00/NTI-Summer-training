@@ -8,6 +8,8 @@ const reviewsRouter: Router = Router({ mergeParams: true });
 // Get or create reviews 
 reviewsRouter.route('/').get(filterReviews, getReviews).post(protectRoutes, checkActive, allowedTo('user'), setProductAndUserId, createReviewValidator, createReview);
 
+reviewsRouter.route('/myReviews').get(protectRoutes, checkActive, allowedTo('user'), filterReviews, getReviews);
+
 // Get, update, or delete a review by ID 
 reviewsRouter
     .route('/:id')

@@ -11,13 +11,18 @@ const ProductsSchema: Schema = new Schema<Products>(
         sold: { type: Number, default: 0 },
         cover: { type: String, default: '' },
         images: [String],
-        ratingAverage: { type: Number, default: 0, min: 0, max: 5 }, // Average rating between 0 and 5
+        ratingAverage: { type: Number, default: 0, min: 0, max: 5 },
         ratingCount: { type: Number, default: 0, min: 0 },
         category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
         subcategory: { type: Schema.Types.ObjectId, required: true, ref: 'SubCategory' },
     },
-    { timestamps: true }
+    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+ProductsSchema.virtual('reviews', { ref: 'reviews', foreignField: 'product', localField: '_id' });
+
+// ProductsSchema.virtual('reviews', { ref: 'reviews', foreignField: 'product', localField: '_id' });
+// ProductsSchema.virtual('reviews', { ref: 'Review', localField: '_id', foreignField: 'product' });
 
 // const imageUrl = (document: Products) => {
 //     if (document.cover) {
@@ -34,10 +39,13 @@ const ProductsSchema: Schema = new Schema<Products>(
 //     }
 // };
 
-ProductsSchema.virtual('reviews', { ref: 'reviews', foreignField: 'product', localField: '_id' })
-
 // ProductsSchema.post('init', (document: Products) => imageUrl(document));
 // ProductsSchema.post('save', (document: Products) => imageUrl(document));
+
+// ProductsSchema.pre<Products>(/^find/, function (next) {
+//     this.populate({ path: 'reviews' });
+//     next();
+// });
 
 ProductsSchema.pre<Products>(/^find/, function (next) {
     this.populate({
@@ -47,4 +55,4 @@ ProductsSchema.pre<Products>(/^find/, function (next) {
     next();
 });
 
-export default model<Products>('Products', ProductsSchema);
+export default model<Products>('Product', ProductsSchema)

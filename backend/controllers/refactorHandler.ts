@@ -6,7 +6,7 @@ import { FilterData } from '../interfaces/filterData';
 import Features from '../utils/features';
 
 export const getAll = <modelType>(model: mongoose.Model<any>, modelName: string) =>
-    asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {        
         let filterDate: FilterData = {};
         let searchLength: number = 0;
         if (req.filterData) filterDate = req.filterData;
@@ -21,12 +21,16 @@ export const getAll = <modelType>(model: mongoose.Model<any>, modelName: string)
         let doc: modelType[] = await apiFeatures.mongooseQuery;
         searchLength = doc.length;
         apiFeatures = new Features(mongooseQuery, req.query).pageination(searchLength);
-        res.status(200).json({ length: doc.length, pagination: paginationResult , data: doc });
+        res.status(200).json({ length: doc.length, pagination: paginationResult, data: doc });
     });
 
-export const getOne = <modelType>(model: mongoose.Model<any>) =>
+export const getOne = <modelType>(model: mongoose.Model<any>, population?: string) =>
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-        const doc = await model.findById(req.params.id);
+        let query = model.findById(req.params.id);
+        if (population) {
+            query = query.populate(population);
+        }
+        const doc = await query;
         if (!doc) return next(new ApiErrors(`${req.__('not_found')}`, 404));
         res.status(200).json({ data: doc });
     });

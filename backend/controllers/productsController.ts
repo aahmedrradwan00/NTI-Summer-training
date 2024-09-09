@@ -1,7 +1,7 @@
 import { createOne, deleteOne, getAll, getOne, updateOne } from './refactorHandler';
 import { NextFunction, Request, Response } from 'express';
 import { Products } from '../interfaces/products';
-import Product from '../models/productsModel';
+import ProductModel from '../models/productsModel';
 import asyncHandler from 'express-async-handler';
 import sharp from 'sharp';
 import { uploadMultiImages } from '../middlewares/uploadsImages';
@@ -33,17 +33,17 @@ export const resizeImage = asyncHandler(async (req: Request, res: Response, next
 });
 
 //create category
-export const createProducts = createOne<Products>(Product);
+export const createProducts = createOne<Products>(ProductModel);
 
 //get all Products
-export const getProducts = getAll<Products>(Product, 'Product');
+export const getProducts = getAll<Products>(ProductModel, 'Product');
 
 //get one Products
-export const getProduct = getOne<Products>(Product);
+export const getProduct = getOne<Products>(ProductModel,"reviews");
 
 //update one Products
 
-export const updateProduct = updateOne<Products>(Product);
+export const updateProduct = updateOne<Products>(ProductModel);
 
 // delete Products
-export const deleteProduct = deleteOne<Products>(Product);
+export const deleteProduct = deleteOne<Products>(ProductModel);

@@ -1,0 +1,66 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Pagination } from '../interfaces/pagination';
+import { AuthService } from '../services/auth.service';
+import { ReviewsService } from '../services/reviews.service';
+import { GlobalService } from '../services/global.service';
+import { formatDate } from '@angular/common';
+
+@Component({
+    selector: 'app-reviews',
+    standalone: true,
+    imports: [],
+    templateUrl: './reviews.component.html',
+    styleUrl: './reviews.component.scss',
+})
+export class ReviewsComponent implements OnInit, OnDestroy {
+    subscription: any;
+    reviews: any[] = [];
+    reviewsLength: number = 0;
+    page: number = 1;
+    pagination: Pagination = {};
+    search: string = '';
+    productImage: string = '';
+    constructor(private _AuthService: AuthService, private _ReviewsService: ReviewsService, private _GlobalService: GlobalService) {}
+
+    loadReviews() {
+        this.subscription = this._ReviewsService.getUserReviews(undefined, this.page, '-createAt', this.search).subscribe({
+            next: (res) => {
+                this.reviews = res.data;
+                console.log(res.data);
+                this.pagination = res.pagination;
+                this.reviewsLength = res.length;
+            },
+        });
+    }
+
+    updateReview(reviewId: string) {
+        this._ReviewsService.updateUserReview(reviewId, formatDate).subscribe({
+            next: (res) => {
+                this.loadReviews();
+                alert('Review deleted successfully');
+            },
+        });
+    }
+
+    changePage(page: number) {
+        this.page = page;
+        this.loadReviews();
+    }
+
+    deleteReview(reviewId: string) {
+        this._ReviewsService.deleteUserReview(reviewId).subscribe({
+            next: (res) => {
+                this.loadReviews();
+                alert('Review deleted successfully');
+            },
+        });
+    }
+    ngOnInit(): void {
+        this._AuthService.checkToken();
+        this.productImage = this._GlobalService.productImagesRoute;
+        this.loadReviews();
+    }
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+}

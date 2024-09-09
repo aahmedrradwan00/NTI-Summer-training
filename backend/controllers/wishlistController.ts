@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { getOne } from './refactorHandler';
+        import { getOne } from './refactorHandler';
 import userModel from '../models/userModel';
 
 
