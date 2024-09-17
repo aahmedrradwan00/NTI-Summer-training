@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { createProductsValidator, deleteProductsValidator, getProductsValidator } from '../utils/validation/productsValidator';
-import { updateCategoryValidator } from '../utils/validation/categoriesValidator';
 import { createProducts, deleteProduct, getProduct, getProducts, resizeImage, updateProduct, uploadProductImages } from '../controllers/productsController';
 import { allowedTo, checkActive, protectRoutes } from '../controllers/authController';
 import reviewsRouter from './reviewsRoute';
@@ -14,6 +13,6 @@ ProductsRouter.route('/').get(getProducts).post(protectRoutes, checkActive, allo
 // Get, update, or delete a product by ID
 ProductsRouter.route('/:id')
     .get(getProductsValidator, getProduct)
-    .put(protectRoutes, checkActive, allowedTo('manager', 'admin'), updateCategoryValidator, updateProduct)
+    .put(protectRoutes, checkActive, allowedTo('manager', 'admin'), uploadProductImages,resizeImage, getProductsValidator, updateProduct)
     .delete(protectRoutes, checkActive, allowedTo('manager', 'admin'), deleteProductsValidator, deleteProduct);
 export default ProductsRouter;

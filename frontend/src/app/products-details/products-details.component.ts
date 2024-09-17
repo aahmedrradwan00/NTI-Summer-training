@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../services/products.service';
@@ -11,7 +11,7 @@ import { ReviewsService } from '../services/reviews.service';
 @Component({
     selector: 'app-products-details',
     standalone: true,
-    imports: [CurrencyPipe, DatePipe, ReactiveFormsModule],
+    imports: [ReactiveFormsModule, CommonModule],
     templateUrl: './products-details.component.html',
     styleUrl: './products-details.component.scss',
 })
@@ -37,8 +37,6 @@ export class ProductsDetailsComponent implements OnInit, OnDestroy {
     loadProduct() {
         this.subscription = this._ProductsService.getOneProduct(this.id).subscribe((res) => {
             this.product = res.data;
-            console.log(this.product.review);
-            
         });
     }
 
@@ -46,6 +44,7 @@ export class ProductsDetailsComponent implements OnInit, OnDestroy {
         this._ReviewsService.addReview(productId, formData.value).subscribe({
             next: (res) => {
                 this.loadProduct();
+                alert('Review Added');
             },
             error: (err) => {
                 if (err.error.errors) {
@@ -57,19 +56,11 @@ export class ProductsDetailsComponent implements OnInit, OnDestroy {
                     this.reviewError = `You Must Login to add review`;
                     console.log(err);
                     console.log(formData);
-                    
                 }
             },
         });
     }
 
-    ngOnInit(): void {
-        
-        // this._AuthService.checkToken();
-        this.id = this._ActivatedRoute.snapshot.params['id'];
-        this.imgDomain = this._ProductsService.productImages;
-        this.loadProduct();
-    }
     addToCart(productId: string) {
         this._CartService.addProductToCart(productId).subscribe((res) => {
             alert('Product Added to Cart');
@@ -82,6 +73,12 @@ export class ProductsDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
+    ngOnInit(): void {
+        // this._AuthService.checkToken();
+        this.id = this._ActivatedRoute.snapshot.params['id'];
+        this.imgDomain = this._ProductsService.productImages;
+        this.loadProduct();
+    }
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }

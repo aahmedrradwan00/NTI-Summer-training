@@ -1,0 +1,30 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.number {
+    font-size: 30vmin;
+    font-weight: 900;
+    color: #000;
+    letter-spacing: 5vmin;
+    text-shadow: 2px -1px 0 #000, 4px -2px 0 #333, 6px -3px 0 #555, 8px -4px 0 #777;
+}
+
+.text {
+    font-family: 'Courgette', cursive;
+    font-size: 5vmin;
+}
+
+.text span {
+    font-size: 10vmin;
+}
+
+.btn-home {
+    margin-top: 20px;
+}

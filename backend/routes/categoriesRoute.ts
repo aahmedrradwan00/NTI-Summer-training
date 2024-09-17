@@ -2,10 +2,11 @@ import { Router } from 'express';
 import { createCategory, deleteCategory, getCategories, getCategory, updateCategory } from '../controllers/categoriesController';
 import { createCategoryValidator, deleteCategoryValidator, getCategoryValidator, updateCategoryValidator } from '../utils/validation/categoriesValidator';
 import { allowedTo, checkActive, protectRoutes } from '../controllers/authController';
+import SubCategoriesRouter from './subcategoriesRoute';
 const CategoriesRouter: Router = Router();
 
 // Handle subcategory routes
-CategoriesRouter.use('/:categoryId/subcategories', CategoriesRouter);
+CategoriesRouter.use('/:categoryId/subcategories', SubCategoriesRouter);
 
 // Get or create categories 
 CategoriesRouter.route('/').get(getCategories).post(protectRoutes, checkActive, allowedTo('manager', 'admin'), createCategoryValidator, createCategory);

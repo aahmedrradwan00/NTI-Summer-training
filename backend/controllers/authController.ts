@@ -8,14 +8,13 @@ import ApiErrors from '../utils/apiErrors';
 import crypto from 'crypto';
 import sendEmail from '../utils/email';
 
-const createToken = (id: any) => {
-    return Jwt.sign({ _id: id }, process.env.JWT_SECRET_KEY!, { expiresIn: process.env.JWT_EXPIRES_IN });
-};
+const createToken = (payload: any, role: string) => Jwt.sign({ _id: payload, role: role }, process.env.JWT_SECRET_KEY!, { expiresIn: process.env.JWT_EXPIRES_IN });
 
 // signup
 export const signup = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    req.body.role = 'user';
     const user: User = await userModel.create(req.body);
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.role);
     res.status(201).json({ token, data: user });
 });
 
@@ -26,7 +25,7 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
     if (!user || !(await bcrypt.compare(password, user.password))) {
         return next(new ApiErrors('uncorrect email or password', 401));
     }
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.role);
     res.status(201).json({ token, data: user });
 });
 
@@ -41,7 +40,7 @@ export const protectRoutes = asyncHandler(async (req: Request, res: Response, ne
     const currentUser = await userModel.findById(decode._id);
     if (!currentUser) return next(new ApiErrors('The user belonging to this token does no longer exist.', 401));
     if (currentUser.passwordChangedAt instanceof Date) {
-        const changedPasswordTime: number = currentUser.passwordChangedAt.getTime() / 1000;
+        const changedPasswordTime: number = parseInt((currentUser.passwordChangedAt.getTime() / 1000).toString());
         if (changedPasswordTime > decode.iat) return next(new ApiErrors('login again', 401));
     }
     req.user = currentUser;
@@ -65,7 +64,7 @@ export const forgetPassword = asyncHandler(async (req: Request, res: Response, n
         console.log(error);
         return next(new ApiErrors('Error sending email', 400));
     }
-    const resetToken: string = createToken(user._id);
+    const resetToken: string = createToken(user._id, user.role);
     res.status(200).json({ message: 'Reset code sent to email', resetToken });
 });
 

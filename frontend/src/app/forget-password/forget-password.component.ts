@@ -51,7 +51,7 @@ export class ForgetPasswordComponent {
                 localStorage.removeItem('verify');
                 this.sendMailFlag = false;
                 this.verifyCodeFlag = false;
-                this._Router.navigate(['/login']);
+                this._Router.navigate(['/account/login']);
             },
             error: (err) => {
                 console.log(err.error);

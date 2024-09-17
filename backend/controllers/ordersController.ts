@@ -11,7 +11,7 @@ import productsModel from '../models/productsModel';
 
 // filterOrders
 export const filterOrders = (req: Request, res: Response, next: NextFunction) => {
-    if (req.user?.role) {
+    if (req.user?.role === 'user') {
         let filterData: FilterData = { user: req.user?._id };
         req.filterData = filterData;
     }
@@ -19,7 +19,7 @@ export const filterOrders = (req: Request, res: Response, next: NextFunction) =>
 };
 
 // get all orders
-export const getOrders = getAll<Orders>(ordersModel, 'Order');
+export const getOrders = getAll<Orders>(ordersModel, 'Orders');
 // get one order
 export const getOrder = getOne<Orders>(ordersModel);
 //create order
@@ -34,7 +34,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response, next
         user: req.user?._id,
         totalPrice: totalOrderPrice,
         cartItems: cart.cartItems,
-        address: req.body.address,
+        address: req.body.address ,
         taxPrice,
     });
     if (order) {
@@ -47,7 +47,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response, next
         await productsModel.bulkWrite(bulkOption);
         await cartsModel.findByIdAndDelete(cart._id);
     }
-    res.status(204).json({ date: order });
+    res.status(201).json({ date: order });
 });
 
 // update order isPaid,isDeliverd

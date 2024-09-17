@@ -18,18 +18,20 @@
                 <div class="category text-bold">{{ product?.subcategory?.name }}</div>
                 <div class="product-title text-bold my-3">{{ product?.name }}</div>
                 <div class="price-area my-4">
-                    <!-- <p class="old-price mb-1"><del>$100</del> <span class="old-price-discount text-danger">(20% off)</span></p> -->
-                    <p class="new-price text-bold mb-1">{{ product?.price | currency }}</p>
+                    <p class="fs-3 mb-1">{{ product?.price | currency }}</p>
                     <p class="text-secondary mb-1">(Additional tax may apply on checkout)</p>
-                    <p class="new-price text-bold mb-1">{{ product?.ratingAverage }} &star;</p>
+                    <p class="fs-5 mb-1">
+                        Rating : <span class="text-bold">{{ product.ratingAverage }} </span> <i class="fa fa-star" aria-hidden="true"></i>
+                    </p>
+                    <p class="fs-6 mt-4">Available quantity : {{ product.quantity }}</p>
                 </div>
 
                 <div class="buttons d-flex my-5">
                     <div class="block">
-                        <button (click)="addToWishlist(product._id)" class="shadow btn btn btn-primary">Add to Wishlist</button>
+                        <button (click)="addToWishlist(product._id)" class="shadow btn btn btn-danger">Add to Wishlist</button>
                     </div>
                     <div class="block">
-                        <button (click)="addToCart(product._id)" class="shadow btn btn btn-success">Add to cart</button>
+                        <button (click)="addToCart(product._id)" class="shadow btn btn btn-secondary">Add to cart</button>
                     </div>
                 </div>
             </div>
@@ -48,14 +50,14 @@
 
             <div class="delivery my-4">
                 <p class="font-weight-bold mb-0">
-                    <span><i class="fa-solid fa-truck"></i></span> <b>Delivery done in 3 days from date of purchase</b>
+                    <span><i class="fa-solid fa-truck"></i></span> <b> Delivery done in 3 days from date of purchase</b>
                 </p>
                 <p class="text-secondary">Order now to get this product delivery</p>
             </div>
 
             <div class="delivery-options my-4">
                 <p class="font-weight-bold mb-0">
-                    <span><i class="fa-solid fa-filter"></i></span> <b>Delivery options</b>
+                    <span><i class="fa-solid fa-filter"></i></span> <b> Delivery options</b>
                 </p>
                 <p class="text-secondary">View delivery options here</p>
             </div>
@@ -81,23 +83,31 @@
                         <label class="star" for="star2" title="Good" aria-hidden="true"></label>
                         <input type="radio" formControlName="rating" id="star1" name="rating" value="1" />
                         <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
-                        <button class="btn btn-success shadow mt-2 mx-3">Add Review</button>
+                        <button class="btn btn-secondary shadow mt-2 mx-3">Add Review</button>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="container">
-            <hr class="my-3" />
-            <h2 class="text-center">Product Reviews</h2>
-            <hr class="my-3" />
-            @for(review of product?.reviews; track review._id){
-            <div>
-                <h4>{{ review?.user?.name }}</h4>
-                <p>{{ review?.comment }} - {{ review?.rating }}&star;</p>
-                <p>{{ review?.createdAt | date }}</p>
-                <hr class="my-4" />
+        <div class="container my-5">
+            <h2 class="text-center mb-4">Product Reviews</h2>
+            <div class="row justify-content-center">
+                @for(review of product?.reviews; track review._id){
+                <div class="col-md-8 col-lg-6 mb-4">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <!-- User Info -->
+                            <h4 class="card-title">{{ review?.user?.name }}</h4>
+                            <!-- Review Comment & Rating -->
+                            <p class="card-text">
+                                {{ review?.comment }} - <span class="text-warning">{{ review?.rating }}&star;</span>
+                            </p>
+                            <!-- Date of Review -->
+                            <p class="text-muted">{{ review?.createdAt | date }}</p>
+                        </div>
+                    </div>
+                </div>
+                }
             </div>
-            }
         </div>
     </div>
 </div>

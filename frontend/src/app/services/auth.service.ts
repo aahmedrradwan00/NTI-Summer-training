@@ -12,9 +12,6 @@ import { GlobalService } from './global.service';
 export class AuthService {
     hostName: string = '';
     routeName: string = '';
-    // onInit
-    // onChange
-    // onDestroy
     constructor(private _HttpClient: HttpClient, private _Router: Router, private _GlobalService: GlobalService) {
         this.hostName = this._GlobalService.hostName;
         this.routeName = this._GlobalService.authRoute;
@@ -22,6 +19,11 @@ export class AuthService {
             this.saveCurrentUser();
         }
     }
+
+    isLoggedIn(): boolean {
+        return !!localStorage.getItem('user');
+    }
+    
     currentUser = new BehaviorSubject(null);
     saveCurrentUser() {
         const token: any = localStorage.getItem('user');
@@ -32,7 +34,7 @@ export class AuthService {
         const decodeToken = jwtDecode(token);
         if (decodeToken.exp! < Date.now() / 1000) {
             this.logout();
-            this._Router.navigate(['/login']);
+            this._Router.navigate(['/account/login']);
         }
     }
     signup(formData: Signup): Observable<any> {

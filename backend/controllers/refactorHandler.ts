@@ -6,7 +6,7 @@ import { FilterData } from '../interfaces/filterData';
 import Features from '../utils/features';
 
 export const getAll = <modelType>(model: mongoose.Model<any>, modelName: string) =>
-    asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {        
+    asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         let filterDate: FilterData = {};
         let searchLength: number = 0;
         if (req.filterData) filterDate = req.filterData;
@@ -51,8 +51,9 @@ export const updateOne = <modelType>(model: mongoose.Model<any>) =>
 
 export const deleteOne = <modelType>(model: mongoose.Model<any>) =>
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-        const doc = await model.findByIdAndDelete(req.params.id);
-        if (!doc) return next(new ApiErrors('Document not found', 404));
-        doc.remove();
+        const doc = await model.findOneAndDelete({ _id: req.params.id });
+        if (!doc) {
+            return next(new ApiErrors(`${req.__('not_found')}`, 404));
+        }
         res.status(204).json({ data: doc });
     });

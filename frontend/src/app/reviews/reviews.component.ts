@@ -26,7 +26,6 @@ export class ReviewsComponent implements OnInit, OnDestroy {
         this.subscription = this._ReviewsService.getUserReviews(undefined, this.page, '-createAt', this.search).subscribe({
             next: (res) => {
                 this.reviews = res.data;
-                console.log(res.data);
                 this.pagination = res.pagination;
                 this.reviewsLength = res.length;
             },
@@ -57,7 +56,7 @@ export class ReviewsComponent implements OnInit, OnDestroy {
     }
     ngOnInit(): void {
         this._AuthService.checkToken();
-        this.productImage = this._GlobalService.productImagesRoute;
+        this.productImage = this._GlobalService.productsImages;
         this.loadReviews();
     }
     ngOnDestroy(): void {

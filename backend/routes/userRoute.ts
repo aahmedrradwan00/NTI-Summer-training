@@ -8,7 +8,7 @@ import {
     updateUser,
     uploadUserImage,
     getLoggedUser,
-    changeLoggedUserPasssword,
+    changeLoggedUserPassword,
     updateLoggedUser,
     setLoggedUserId,
     changeUserPassword,
@@ -23,8 +23,8 @@ UserRouter.use(protectRoutes, checkActive);
 
 // Routes for the logged-in user
 UserRouter.get('/me', getLoggedUser, getUser);
-UserRouter.put('/updateMe', updateUserValidator, updateLoggedUser);
-UserRouter.put('/changeMyPassword', changeLoggedUserPasswordValidator, changeLoggedUserPasssword);
+UserRouter.put('/updateMe',uploadUserImage,resizeUserImage, updateUserValidator, updateLoggedUser);
+UserRouter.put('/changeMyPassword', changeLoggedUserPasswordValidator, changeLoggedUserPassword);
 UserRouter.delete('/deleteMe', allowedTo('user'), setLoggedUserId, deleteUser);
 
 // Admin/manager restricted routes

@@ -27,13 +27,13 @@ export const createUserValidator: RequestHandler[] = [
         }),
     check('confirmPassword').notEmpty().withMessage('confirmPassword is required').isLength({ min: 6, max: 20 }).withMessage('confirmPassword must be between 6 and 20 characters'),
     check('role').notEmpty().withMessage('Role is required').isIn(['manager', 'admin', 'user']).withMessage('Role must be either manager, admin, or user'),
-    check('address')
-        .notEmpty()
-        .withMessage('Address is required')
-        .custom((val) => {
-            if (!val.street || !val.city || !val.country) throw new Error('Street, city, and country are required in the address');
-            return true;
-        }),
+    // check('address')
+    //     .notEmpty()
+    //     .withMessage('Address is required')
+    //     .custom((val) => {
+    //         if (!val.street || !val.city || !val.country) throw new Error('Street, city, and country are required in the address');
+    //         return true;
+    //     }),
     validatorMiddleware,
 ];
 

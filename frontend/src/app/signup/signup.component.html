@@ -3,7 +3,6 @@
     <div class="w-50 p-2 ims-5 m-auto">
         <div class="w-75 m-auto">
             <h1 class="text-center mb-4">Create Account</h1>
-            <!-- <h1 class="text-center mb">{{ signupForm.get('name')?.errors | json }}</h1> -->
             <form [formGroup]="signupForm" (ngSubmit)="signup(signupForm)">
                 <div class="p-3">
                     <input formControlName="name" class="form-control" type="text" placeholder="Name" />

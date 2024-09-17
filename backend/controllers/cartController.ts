@@ -48,7 +48,7 @@ export const addProductToCart = asyncHandler(async (req: Request, res: Response,
 
 //remove product from cart
 export const removeProductFromCart = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const cart: any = await cartsModel.findByIdAndUpdate({ user: req.user?._id }, { $pull: { cartItems: { product: req.body.product } } }, { new: true });
+    const cart: any = await cartsModel.findOneAndUpdate({ user: req.user?._id }, { $pull: { cartItems: { _id: req.params.itemId } } }, { new: true });
     calcTotalPrice(cart);
     await cart.save();
     res.status(200).json({ length: cart.cartItems.length, data: cart });
@@ -70,7 +70,7 @@ export const updateCart = asyncHandler(async (req: Request, res: Response, next:
 // Apply coupon
 export const applyCoupon = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const coupon = await couponsModel.findOne({ name: req.body.name, expireTime: { $gt: Date.now() } });
-    if (!coupon) return next(new ApiErrors('invlid or expired coupon', 404));
+    if (!coupon) return next(new ApiErrors('invalid or expired coupon', 404));
     const cart: any = await cartsModel.findOne({ user: req.user?._id });
     const totalPrice: number = cart.totalPrice;
     const totalPriceAfterDiscount = (totalPrice - (totalPrice * coupon.discount) / 100).toFixed(2);
@@ -82,5 +82,5 @@ export const applyCoupon = asyncHandler(async (req: Request, res: Response, next
 // clear cart
 export const clearCart = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     await cartsModel.findOneAndDelete({ user: req.user?._id });
-    res.status(204);
+    res.status(204).json();
 });

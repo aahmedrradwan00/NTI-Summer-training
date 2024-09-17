@@ -1,0 +1,51 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { GlobalService } from './global.service';
+import { jwtDecode } from 'jwt-decode';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
+
+@Injectable({
+    providedIn: 'root',
+})
+export class AuthService {
+    private apiUrl: string = '';
+    private routeName: string = '';
+    currentUser = new BehaviorSubject(null);
+    loginPhoto: string = 'images/phone.svg';
+    constructor(private _HttpClient: HttpClient, private _GlobalService: GlobalService, private _Router: Router) {
+        this.apiUrl = this._GlobalService.apiHostName;
+        this.routeName = this._GlobalService.authRoute;
+        if (localStorage.getItem('user') !== null) this.saveCurrentUser();
+    }
+
+    saveCurrentUser() {
+        const token: any = localStorage.getItem('user');
+        this.currentUser.next(jwtDecode(token));
+    }
+
+    checkToken() {
+        const token: any = localStorage.getItem('user');
+        const decodeToken = jwtDecode(token);
+        if (decodeToken.exp! < Date.now() / 1000) {
+            this.logout();
+            this._Router.navigate(['/login']);
+        }
+    }
+    login(formData: any): Observable<any> {
+        return this._HttpClient.post(`${this.apiUrl}${this.routeName}/login`, formData);
+    }
+    sendMail(formData: any): Observable<any> {
+        return this._HttpClient.post(`${this.apiUrl}${this.routeName}/login`, formData);
+    }
+    verifyCode(formData: any): Observable<any> {
+        return this._HttpClient.post(`${this.apiUrl}${this.routeName}/login`, formData);
+    }
+    resetPassword(formData: any): Observable<any> {
+        return this._HttpClient.post(`${this.apiUrl}${this.routeName}/login`, formData);
+    }
+    logout() {
+        localStorage.removeItem('user');
+        this.currentUser.next(null);
+    }
+}

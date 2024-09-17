@@ -4,8 +4,11 @@ import { check } from 'express-validator';
 
 export const addProductToCartValidator: RequestHandler[] = [check('product').notEmpty().withMessage('product is required').isMongoId().withMessage('product id not vaild'), validatorMiddleware];
 
-export const removeProducyFromCartValidator: RequestHandler[] = [check('product').notEmpty().withMessage('product is required').isMongoId().withMessage('product id not vaild'), validatorMiddleware];
-
+export const removeProductFromCartValidator: RequestHandler[] = [
+    check('itemId').isMongoId().withMessage('invalid mongo id'),
+    validatorMiddleware
+  ]
+  
 export const updateProductQuantityValidator: RequestHandler[] = [
     check('itemId').isMongoId().withMessage('invalid mongo id'),
     check('quantity')

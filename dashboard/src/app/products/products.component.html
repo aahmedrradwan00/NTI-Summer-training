@@ -1,0 +1,62 @@
+<div class="p-3">
+    <h2 class="text-center my-3">All products</h2>
+    <hr class="my-3" />
+    <div class="d-flex justify-content-between">
+        <a class="btn btn-dark" routerLink="create">Create product</a>
+        <input (change)="searchData(searchWord.value)" #searchWord type="search" placeholder="Search" class="form-control w-25 me-2" aria-label="Search" />
+    </div>
+    <hr class="my-3" />
+    <table class="w-100">
+        <thead>
+            <tr class="border-bottom">
+                <th class="p-3">#</th>
+                <th class="p-3">ID</th>
+                <th class="p-3">product Image</th>
+                <th class="p-3">product Name</th>
+                <th class="p-3">Category</th>
+                <th class="p-3">Subcategory</th>
+                <th class="p-3">Price</th>
+                <th class="p-3">Quantity</th>
+                <th class="p-3">Sold</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (product of products; track product._id) {
+            <tr class="border-bottom m-5 ">
+                <td>{{ $index + 1 }}</td>
+                <td class="text-secondary px-3">....{{ product?._id | slice : -4 }}</td>
+                <td class="px-5"><img class="mx-3" width="50px" [src]="productImage + product?.cover" [alt]="product?.name" /></td>
+                <td class="px-3">{{ product?.name }}</td>
+                <td class="px-3">{{ product?.category?.name }}</td>
+                <td class="px-5">{{ product?.subcategory?.name }}</td>
+                <td class="px-3">{{ product?.price | currency }}</td>
+                <td class="px-5">{{ product?.quantity }}</td>
+                <td class="px-3">{{ product?.sold }}</td>
+                <td class="px-3 d-flex gap-4">
+                    <a [routerLink]="['/products', product._id, 'update']" class="btn btn-secondary rounded-3 m-3">Update</a>
+                    <button class="btn btn-danger rounded-3 m-3 " (click)="deleteProduct(product._id)" c>Delete</button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="d-flex justify-content-center mt-5">
+    <ul class="pagination">
+        @if(pagination.prev){
+        <li (click)="changePage(pagination.prev)" class="page-item"><button class="page-link">Previous</button></li>
+        } @if(pagination.currentPage!==1) {
+        <li (click)="changePage(1)" class="page-item"><button class="page-link">1</button></li>
+        }
+        <li class="page-item m">
+            <button class="page-link">{{ pagination.currentPage }}</button>
+        </li>
+        @if(pagination.currentPage!==pagination.totalPages) {
+        <li (click)="changePage(pagination.totalPages!)" class="page-item">
+            <button class="page-link">{{ pagination.totalPages }}</button>
+        </li>
+        } @if(pagination.next){
+        <li (click)="changePage(pagination.next)" class="page-item"><button class="page-link">Next</button></li>
+        }
+    </ul>
+</div>

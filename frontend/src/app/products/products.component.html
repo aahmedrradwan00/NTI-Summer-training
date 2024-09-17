@@ -8,27 +8,28 @@
 <div class="row m-auto container mt-4">
     <div class="d-flex p-3 w-100">
         <input type="text" class="form-control me-2" placeholder="Search Products" #filter />
-        <button class="primary" type="button" (click)="searchProduct(filter.value)">Search</button>
+        <button class="btn btn-dark" type="button" (click)="searchProduct(filter.value)">Search</button>
     </div>
 
-<app-filter (filterItems)="filterItems($event)"></app-filter>
-    @for(product of products; track product._id){
-    <div class="card m-2 col-4" style="width: 18rem">
-        <img [src]="imgDomain + product.cover" class="card-img-top w-100 h-50" [alt]="product.name" />
-        <div class="card-body position-relative">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <p class="card-text">{{ product.description | description : 15 }}</p>
-            <p class="card-text">price : {{ product.price | currency }}</p>
-            <p class="card-text">{{ product.ratingAverage }} &star; - count {{ product.ratingCount }}</p>
-            <div class="position-absolute btn-card">
-                <a [routerLink]="['/products', product._id]" class="btn btn-primary mx-2">See More</a>
-                <button class="btn btn-success mx-2">Add to Cart</button>
+    <!-- <app-filter (filterItems)="filterItems($event)"></app-filter> -->
+    <div class="row m-auto container mt-4">
+        @for(product of products; track product._id){
+        <div class="card m-1 col-4" style="width: 18rem">
+            <img [src]="imgDomain + product.cover" class="card-img-top w-100 rounded-3 h-50" [alt]="product.name" />
+            <div class="card-body d-flex flex-column position-relative">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">Rating : {{ product.ratingAverage }} <i class="fa fa-star" aria-hidden="true"></i></p>
+                <p class="card-text">{{ product.description | description : 15 }}...</p>
+                <p class="card-text">price: {{ product.price | currency }}</p>
+                <p class="card-text">Available quantity : {{ product.quantity }}</p>
+                <div class="mt-auto d-flex g-3">
+                    <a [routerLink]="['/products', product._id]" class="btn btn-danger mx-1">See More</a>
+                    <a (click)="addToCart(product._id)" class="btn btn-secondary mx-1">Add to Cart</a>
+                </div>
             </div>
         </div>
+        }
     </div>
-    }
-</div>
-
 <div class="d-flex justify-content-center mt-5">
     <ul class="pagination">
         @if(pagination.prev){

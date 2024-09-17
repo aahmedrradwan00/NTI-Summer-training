@@ -34,9 +34,6 @@ export class SignupComponent {
                 this._Router.navigate(['/home']);
             },
             (err) => {
-                console.log(err);
-                
-                console.log(JSON.stringify(err.error.errors));
                 err.error.errors.map((err: any) => {
                     if (err.path === 'email') this.emailErrors = err.msg;
                     if (err.path === 'confirmPassword') this.passwordErrors = err.msg;

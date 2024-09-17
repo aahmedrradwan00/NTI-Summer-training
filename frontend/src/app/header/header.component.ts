@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
     selector: 'app-header',
@@ -9,9 +10,10 @@ import { AuthService } from '../services/auth.service';
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
     isLogin: boolean = false;
-    constructor(private _AuthService: AuthService, private _Router: Router) {
+    user: any;
+    constructor(private _AuthService: AuthService, private _Router: Router, private _ProfileService: ProfileService) {
         // if (_AuthService.currentUser !== null) this.isLogin = true;
         // else this.isLogin = false;
         _AuthService.currentUser.subscribe(() => {
@@ -19,8 +21,21 @@ export class HeaderComponent {
             else this.isLogin = false;
         });
     }
+
+    loadUser() {
+        this._ProfileService.getUser().subscribe({
+            next: (res) => {
+                this.user = res.data;
+            },
+        });
+    }
+
     logout() {
         this._AuthService.logout();
-        this._Router.navigate(['/login']);
+        this._Router.navigate(['/account/login']);
+    }
+    ngOnInit(): void {
+        this.user = this._AuthService.currentUser.getValue();
+        this.loadUser()
     }
 }

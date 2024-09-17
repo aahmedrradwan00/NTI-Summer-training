@@ -7,6 +7,10 @@ import ApiErrors from '../utils/apiErrors';
 import { uploadSingleImages } from '../middlewares/uploadsImages';
 import sharp from 'sharp';
 import bcrypt from 'bcryptjs';
+import Jwt from 'jsonwebtoken';
+
+const createToken = (payload: any, role: string) => Jwt.sign({ _id: payload, role: role }, process.env.JWT_SECRET_KEY!, { expiresIn: process.env.JWT_EXPIRES_IN });
+
 //create User
 export const createUser = createOne<User>(userModel);
 
@@ -19,13 +23,19 @@ export const getUser = getOne<User>(userModel);
 //update one User
 export const updateUser = asyncHandler(async (req: Request, res: any, next: any) => {
     const { name, image, active } = req.body;
-    const user = await userModel.findByIdAndUpdate(req.params.id, {
-        name,
-        image,
-        active,
-    });
+    const user = await userModel.findByIdAndUpdate(
+        req.params.id,
+        {
+            name,
+            image,
+            active,
+        },
+        { new: true }
+    );
     if (!user) return next(new ApiErrors('user not found', 404));
+    res.status(200).json({ data: user, message: 'user updated successfully' });
 });
+
 // delete User
 export const deleteUser = deleteOne<User>(userModel);
 
@@ -54,23 +64,24 @@ export const setLoggedUserId = asyncHandler((req: Request, res: Response, next: 
 
 export const updateLoggedUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const user = await userModel.findByIdAndUpdate(req.user?._id, { name: req.body.name, image: req.body.image }, { new: true });
+    if (!user) return next(new ApiErrors('user not found', 404));
     res.status(200).json({ data: user, message: 'user updated successfully' });
 });
+
 export const getLoggedUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     req.params.id = req.user?._id!.toString();
     next();
 });
 
-export const changeLoggedUserPasssword = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const changeLoggedUserPassword = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const user = await userModel.findByIdAndUpdate(
-        req.params.id,
+        req.user?._id,
         {
-            password: await bcrypt.hash(req.body.password, 12),
+            password: await bcrypt.hash(req.body.password, 13),
             passwordChangedAt: Date.now(),
         },
         { new: true }
     );
-    if (!user) return next(new ApiErrors('user not found', 404));
-    res.status(200).json({ message: 'password changed successfully', data: user });
-    next();
+    const token: string = createToken(user?._id, user?.role!);
+    res.status(200).json({ message: 'password changed successfully', token });
 });

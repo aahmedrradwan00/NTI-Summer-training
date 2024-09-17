@@ -20,7 +20,7 @@ const userSchema: Schema = new Schema<User>(
         resetCode: String,
         resetCodeExpireTime: Date,
         resetCodeVerify: Boolean,
-        wishlist: [{ type: Schema.Types.ObjectId, ref: 'products' }],
+        wishlist: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
     },
     { timestamps: true }
 );

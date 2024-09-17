@@ -6,7 +6,7 @@ const ProductsSchema: Schema = new Schema<Products>(
         name: { type: String, required: true, unique: true, trim: true },
         description: { type: String, required: true, trim: true, minlength: 10, maxlength: 500 },
         price: { type: Number, required: true, min: 1, max: 1000000 },
-        priceAfterDiscount: { type: Number, required: true, min: 1, max: 1000000 },
+        priceAfterDiscount: { type: Number, min: 1, max: 1000000 },
         quantity: { type: Number, default: 0, min: 0 },
         sold: { type: Number, default: 0 },
         cover: { type: String, default: '' },
@@ -52,7 +52,11 @@ ProductsSchema.pre<Products>(/^find/, function (next) {
         path: 'category',
         select: 'name -_id',
     });
+    this.populate({
+        path: 'subcategory',
+        select: 'name -_id',
+    });
     next();
 });
 
-export default model<Products>('Product', ProductsSchema)
+export default model<Products>('Product', ProductsSchema);

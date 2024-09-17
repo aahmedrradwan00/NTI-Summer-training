@@ -1,0 +1,49 @@
+<br /><br /><br />
+<div class="w-50 mt-5 m-auto shadow p-4">
+    <h1 class="text-center">Add Product</h1>
+    <div>
+        <div class="p-3">
+            <input class="form-control" type="name" (change)="this.getName = name.value" #name placeholder="product name" />
+        </div>
+        <div class="form-floating p-3">
+            <textarea class="form-control" (change)="this.getDescription = description.value" #description placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+            <label for="floatingTextarea" class="p-4">Description</label>
+        </div>
+        <div class="p-3 d-flex justify-content-between">
+            <select (change)="loadSubcategories(category.value)" #category class="form-select w-45" aria-label="Default select example">
+                <option disabled selected>choose category</option>
+                @for(category of categories; track category._id){
+                <option [value]="category._id">{{ category.name }}</option>
+                }
+            </select>
+            <select class="form-select w-45" (change)="this.getSubcategory = subcategory.value" #subcategory aria-label="Default select example">
+                <option disabled selected>choose subcategory</option>
+                @for(subcategory of subcategories; track subcategory._id){
+                <option [value]="subcategory._id">{{ subcategory.name }}</option>
+                }
+            </select>
+        </div>
+        <div class="p-3 d-flex justify-content-between">
+            <input class="form-control w-45" type="number" (change)="this.getPrice = price.value" #price placeholder="product price" />
+            <input class="form-control w-45" type="number" (change)="this.getQuantity = quantity.value" #quantity placeholder="product quantity" />
+        </div>
+        <div class="p-3 d-flex justify-content-between">
+            <div class="w-45">
+                <label class="mb-2" for=""> Product Cover</label>
+                <input class="form-control" (change)="setCover($event)" type="file" accept="image/*" />
+            </div>
+            <div class="w-45">
+                <label class="mb-2" for="">Product Images</label>
+                <input class="form-control" (change)="setImages($event)" type="file" accept="image/*" multiple />
+            </div>
+        </div>
+        @if (this.productErorr) { @for (err of productErorr; track $index) {
+        <p class="text-danger">{{ err }}</p>
+        } }
+        <div class="mt-3 text-end">
+            <button (click)="createProduct()" class="btn btn-secondary mx-3">Create</button>
+            <a routerLink="/products" class="btn btn-danger">Cancel</a>
+        </div>
+    </div>
+</div>
+<br /><br /><br />

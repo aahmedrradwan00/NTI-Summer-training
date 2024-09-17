@@ -6,12 +6,12 @@ import { DescriptionPipe } from '../pipes/description.pipe';
 import { RouterLink } from '@angular/router';
 import { Pagination } from '../interfaces/pagination';
 import { FormsModule } from '@angular/forms';
-import { FilterComponent } from '../filter/filter.component';
+import { CartService } from '../services/cart.service';
 
 @Component({
     selector: 'app-products',
     standalone: true,
-    imports: [CurrencyPipe, DescriptionPipe, RouterLink, FormsModule, FilterComponent],
+    imports: [CurrencyPipe, DescriptionPipe, RouterLink, FormsModule],
     templateUrl: './products.component.html',
     styleUrl: './products.component.scss',
 })
@@ -23,7 +23,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     search: string = '';
     pagination: Pagination = {};
 
-    constructor(private _AuthService: AuthService, private _ProductsService: ProductsService) {}
+    constructor(private _AuthService: AuthService, private _ProductsService: ProductsService, private _CartService: CartService) {}
 
     getAllProducts() {
         this.imgDomain = this._ProductsService.productImages;
@@ -46,6 +46,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
         this.getAllProducts();
     }
 
+    addToCart(productId: string) {
+        this._CartService.addProductToCart(productId).subscribe((res) => {
+            alert('Product Added to cart');
+        });
+    }
     ngOnInit(): void {
         // this._AuthService.checkToken();
         this.getAllProducts();

@@ -1,0 +1,44 @@
+<br /><br /><br />
+<div class="w-75 m-auto mt-5 shadow p-4">
+    <h1 class="text-center">Create Coupon</h1>
+    <form [formGroup]="couponForm" (ngSubmit)="createCoupon(couponForm)">
+        <div class="p-3">
+            <input formControlName="name" class="form-control" placeholder="Name" type="name" />
+        </div>
+        <div class="px-4">
+            @if(couponForm.get("name")?.errors!==null&& couponForm.get("name")?.touched && couponError=="") { @if(couponForm.get("name")?.errors?.["required"]){
+            <p class="text-danger">coupon name is required</p>
+            } } @if (couponError!=="") {
+            <div class="">{{ couponError }}</div>
+            }
+        </div>
+        <div class="p-3">
+            <input formControlName="discount" class="form-control" placeholder="Discount" type="discount" />
+        </div>
+        <div class="px-4">
+            @if(couponForm.get("discount")?.errors!==null&& couponForm.get("discount")?.touched && couponError=="") { @if(couponForm.get("discount")?.errors?.["required"]){
+            <p class="text-danger">coupon discount is required</p>
+            }@else {
+            <p class="text-danger">discount must be between 1 and 99</p>
+            } } @if (couponError!=="") {
+            <div class="">{{ couponError }}</div>
+            }
+        </div>
+        <div class="p-3">
+            <input formControlName="expireTime" class="form-control" placeholder="Date" type="date" />
+        </div>
+        <div class="px-4">
+            @if(couponForm.get("expireTime")?.errors!==null&& couponForm.get("expireTime")?.touched && couponError=="") { @if(couponForm.get("expireTime")?.errors?.["required"]){
+            <p class="text-danger">coupon expireTime is required</p>
+            } } @if (couponError!=="") {
+            <div class="">{{ couponError }}</div>
+            }
+        </div>
+     
+        <div class="mt-3 text-end">
+            <button [disabled]="couponForm.invalid" class="btn btn-secondary mx-3">Create</button>
+            <a routerLink="/coupons" class="btn btn-danger">Cancel</a>
+        </div>
+    </form>
+</div>
+<br /><br /><br />

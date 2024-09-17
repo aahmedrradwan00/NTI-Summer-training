@@ -1,0 +1,85 @@
+<div class="p-3">
+    <h2 class="text-center my-3">All Orders</h2>
+    <hr class="my-3" />
+    <div class="d-flex justify-content-end">
+        <input (change)="searchData(searchWord.value)" #searchWord type="search" placeholder="Search" class="form-control w-25 me-2" aria-label="Search" />
+    </div>
+    <hr class="my-3" />
+    <table class="w-100">
+        <thead>
+            <tr class="border-bottom">
+                <th class="p-3">#</th>
+                <th class="p-3">ID</th>
+                <th class="p-3">User</th>
+                <th class="p-3">orders</th>
+                <th class="p-3">Payment</th>
+                <th class="p-3">Delivered</th>
+                <th class="p-3">Deliver time</th>
+                <th class="p-3">Paid</th>
+                <th class="p-3">Pay time</th>
+                <th class="p-3">tax price</th>
+                <th class="p-3">total price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (order of orders; track order._id) {
+            <tr class="border-bottom m-5">
+                <td>{{ $index + 1 }}</td>
+                <td class="text-secondary px-3">....{{ order?._id | slice : -4 }}</td>
+                <td>{{ order?.user?.name }}</td>
+                <td class="d-flex flex-column">
+                    @for(item of order.cartItems; track item._id){
+                    <div class="d-flex flex-row">
+                        @if(item?.product){
+                        <img class="mx-3" width="50px" [src]="productsImage + item?.product?.cover" [alt]="item?.product?.name" />
+                        <div>
+                            <span>{{ item?.product?.name }}</span>
+                            -
+                            <span class="text-danger">Quantity : {{ item?.quantity }}</span>
+                        </div>
+                        }@else {<span class="text-danger">Product Deleted from Manager </span>
+                        <span class="text-danger">Quantity : {{ item?.quantity }}</span>
+                        }
+                        <br /><br />
+                        <hr />
+                    </div>
+                    }
+                </td>
+                <td>{{ order?.paymentMethod }}</td>
+                <td>@if(order?.isDelivered){yes}@else{No}</td>
+                <td>@if(order?.deliveredAt){{{order?.deliveredAt|date}}}@else{-----}</td>
+                <td>@if(order?.isPaid){yes}@else{No}</td>
+                <td>@if(order?.paidAt){{{order?.paidAt|date}}}@else{-----}</td>
+                <td>{{ order?.taxPrice | currency }}</td>
+                <td>{{ order?.totalPrice | currency }}</td>
+                <td class="">
+                    <button [disabled]="order.isDelivered" (click)="updateDelivered(order._id)" class="btn btn-secondary m-1">Deliver Order</button>
+                    <button [disabled]="order.isPaid" (click)="updatePaid(order._id)" class="btn btn-secondary m-1">Pay Order</button>
+                </td>
+            </tr>
+            } @empty {
+            <h1>empty</h1>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="d-flex justify-content-center mt-5">
+    <ul class="pagination">
+        @if(pagination.prev){
+        <li (click)="changePage(pagination.prev)" class="page-item"><button class="page-link">Previous</button></li>
+        } @if(pagination.currentPage!==1) {
+        <li (click)="changePage(1)" class="page-item"><button class="page-link">1</button></li>
+        }
+        <li class="page-item m">
+            <button class="page-link">{{ pagination.currentPage }}</button>
+        </li>
+        @if(pagination.currentPage!==pagination.totalPages) {
+        <li (click)="changePage(pagination.totalPages!)" class="page-item">
+            <button class="page-link">{{ pagination.totalPages }}</button>
+        </li>
+        } @if(pagination.next){
+        <li (click)="changePage(pagination.next)" class="page-item"><button class="page-link">Next</button></li>
+        }
+    </ul>
+</div>

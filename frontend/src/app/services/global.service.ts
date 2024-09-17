@@ -10,6 +10,9 @@ export class GlobalService {
     cartRoute: string = '/api/v1/carts';
     productsRoute: string = '/api/v1/products';
     reviewsRoute: string = '/api/v1/reviews';
-    productImagesRoute: string = `${this.hostName}/products/`;
+    usersRoute: string = '/api/v1/users';
+    orderRoute: string = '/api/v1/orders';
+    productsImages: string = `${this.hostName}/products/`;
+    userImage: string = `${this.hostName}/users/`;
     constructor() {}
 }
