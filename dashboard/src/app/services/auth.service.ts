@@ -36,13 +36,15 @@ export class AuthService {
         return this._HttpClient.post(`${this.apiUrl}${this.routeName}/login`, formData);
     }
     sendMail(formData: any): Observable<any> {
-        return this._HttpClient.post(`${this.apiUrl}${this.routeName}/login`, formData);
+        return this._HttpClient.post(`${this.apiUrl}${this.routeName}/forgetPassword`, formData);
     }
-    verifyCode(formData: any): Observable<any> {
-        return this._HttpClient.post(`${this.apiUrl}${this.routeName}/login`, formData);
+
+    verifyCode(formData: FormData): Observable<any> {
+        return this._HttpClient.post(`${this.apiUrl}${this.routeName}/verifyCode`, formData, { headers: { authorization: `Bearer ${localStorage.getItem('verify')}` } });
     }
-    resetPassword(formData: any): Observable<any> {
-        return this._HttpClient.post(`${this.apiUrl}${this.routeName}/login`, formData);
+
+    resetPassword(formData: FormData): Observable<any> {
+        return this._HttpClient.put(`${this.apiUrl}${this.routeName}/resetCode`, formData, { headers: { authorization: `Bearer ${localStorage.getItem('verify')}` } });
     }
     logout() {
         localStorage.removeItem('user');
