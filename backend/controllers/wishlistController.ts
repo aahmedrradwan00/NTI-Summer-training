@@ -33,8 +33,3 @@ export const getLoggedUserWishlist = asyncHandler(async (req: Request, res: Resp
     const user = await userModel.findById(req.user?._id).populate('wishlist');
     res.status(200).json({ length: user?.wishlist.length, data: user?.wishlist });
 });
-
-
-// GitHub : https://github.com/aahmedrradwan00/NTI-Summer-training
-// dashboard : https://drive.google.com/file/d/1qgisY0MM2KYnOfzC78O32rLIqFxv_ffk/view?usp=drive_link
-// front-end : https://drive.google.com/file/d/1wsYT0pHpKO035VE3Qh_IYkISNJ7D3SjW/view?usp=drive_link
